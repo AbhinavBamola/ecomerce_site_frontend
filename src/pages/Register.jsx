@@ -3,22 +3,25 @@ import axios from "../utils/util.js";
 import { useState } from "react";
 import Nav from "../components/nav.jsx";
 
-export default function Register({user}){
+export default function Register({user,setuser}){
     const navigate=useNavigate();
     const [password,setpassword]=useState("");
     const [userName,setname]=useState("");
     const [email,setemail]=useState("")
     async function handleloginsubmit(e) {
+        try{
         e.preventDefault();
        const res= await axios.post('/user/signup',{userName,email,password});
-       if(res.data.status===200){
+        await axios.get('/api/me').then(res=>setuser(res.data)).catch(err=>{console.log(err)});
+       if(res.status===200){
         navigate('/');
-       }
-       alert(res.error);
+       }}
+       catch(err){console.log(err)}
+       
     }
 return (
     <>
-    <Nav user={user}/>
+    <Nav user={user} setuser={setuser}/>
         <form >
             <label htmlFor="">User Name:</label>
             <input type="text" name="name" value={userName} onChange={(e)=>setname(e.target.value)} /> <br />

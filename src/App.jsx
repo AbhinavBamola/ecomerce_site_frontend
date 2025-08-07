@@ -1,27 +1,29 @@
 import { useState } from 'react'
-import {BrowserRouter,Routes,Route} from 'react-router'; 
+import { BrowserRouter, Routes, Route } from 'react-router';
 import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
-import axios from 'axios';
+import axios from './utils/util.js';
 import { useEffect } from 'react';
 
 function App() {
   const [user, setuser] = useState(null);
 
-  useEffect( ()=>{
+  useEffect(() => {
     async function getuser(params) {
-      const res=await axios.get('http://localhost:8000/api/me');
-    setuser(res.data);
+      await axios.get('/api/me')
+      .then((res) => { setuser(res.data) })
+      .catch(err => { console.log(err) })
     }
     getuser();
-  },[user])
+    console.log("User after setting " + user)
+  }, [])
 
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home user={user} />} />
+          <Route path="/" element={<Home user={user} setuser={setuser} />} />
           <Route path="/login" element={<Login user={user} setuser={setuser} />} />
           <Route path="/register" element={<Register user={user} setuser={setuser} />} />
         </Routes>

@@ -2,17 +2,18 @@ import { useEffect } from "react";
 import { useState } from "react"
 import Nav from "../components/nav";
 
-export default function Home({user}){
-    const [name,setname]=useState("");
+export default function Home({user,setuser}){
+    const [name,setname]=useState("Guest");
     useEffect(()=>{
     if(user){
-        setname(user.name);
+        console.log(user);
+        setname(user.userName);
     }
     else{
         setname("Guest");
-    }},[]);
+    }},[user]);
     return(<>
-    <Nav user={user}/>
+    <Nav user={user} setuser={setuser}/>
     <h1>Hello {name}</h1>
     </>)
 }

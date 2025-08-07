@@ -1,12 +1,14 @@
 import { useNavigate } from "react-router";
 
-export default function Nav({user}){
+export default function Nav({user,setuser}){
     const navigate=useNavigate();
 
     function handlelogin(){
         navigate('/login');
     }
-    function handlelogout(){}
+    function handlelogout(){
+        setuser(null);
+    }
 
     function handleregister(){
         navigate('/register');
@@ -16,7 +18,7 @@ export default function Nav({user}){
         navigate('/');
     }
 
-    if(!user){
+    if(user==null){
         return(
             <>
             <nav>
