@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router';
 import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
+import Createproduct from './pages/CreateProduct.jsx';
 import axios from './utils/util.js';
 import { useEffect } from 'react';
 
@@ -31,6 +32,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home user={user} setuser={setuser} />} />
           <Route path="/login" element={<Login user={user} setuser={setuser} />} />
+          <Route path="/createproduct"  element={<Createproduct user={user} />}/>
           <Route path="/register" element={<Register user={user} setuser={setuser} />} />
         </Routes>
       </BrowserRouter>

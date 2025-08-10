@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router";
+import axios from '../utils/util.js';
 
 export default function Nav({user,setuser}){
     const navigate=useNavigate();
@@ -6,7 +7,8 @@ export default function Nav({user,setuser}){
     function handlelogin(){
         navigate('/login');
     }
-    function handlelogout(){
+    async function handlelogout(){
+        await axios.post('/user/logout')
         setuser(null);
     }
 

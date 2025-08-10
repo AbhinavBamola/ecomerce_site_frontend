@@ -10,6 +10,7 @@ export default function Register({user,setuser}){
     const [email,setemail]=useState("")
     const [display,setdisplay]=useState("None");
     const [adminkey,setadminkey]=useState("");
+    const [photo,setphoto]=useState(null);
     function adminlogintoggle(e){
             if(e.target.checked){
                 setdisplay('inline')
@@ -23,7 +24,20 @@ export default function Register({user,setuser}){
     async function handleloginsubmit(e) {
         try{
         e.preventDefault();
-       const res= await axios.post('/user/signup',{userName,email,password,adminkey});
+        const formData=new FormData();
+        formData.append('userName',userName);
+        formData.append('email',email);
+        formData.append('password',password);
+        formData.append('adminkey',adminkey);
+        if(photo){
+            formData.append('profileImage',photo);
+        }
+        
+       const res= await axios.post('/user/signup',formData,{headers:{
+        "Content-Type":"multipart/formdata",
+       },
+        withCredentials:true,
+    });
         await axios.get('/api/me').then(res=>setuser(res.data)).catch(err=>{console.log(err)});
        if(res.status===200){
         navigate('/');
@@ -51,7 +65,9 @@ return (
             <label htmlFor="">New Admin registration</label>
                 <input type="checkbox" name="" id="" onChange={adminlogintoggle} /><br />
                 <label htmlFor="" style={{display:display}}>Admin Secret Key</label>
-                <input type="text" name="" id=""  style={{display:display}} value={adminkey} onChange={e=>setadminkey(e.target.value)}/>
+                <input type="text" name="" id=""  style={{display:display}} value={adminkey} onChange={e=>setadminkey(e.target.value)}/><br/>
+                <label htmlFor="">Upload profile Image</label>
+            <input type="file" name="" id="" onChange={e=>setphoto(e.target.files[0])} /><br />
             <button type="submit" onClick={handleloginsubmit}>Login</button>
         </form>
     </>
