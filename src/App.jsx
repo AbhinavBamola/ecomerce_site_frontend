@@ -12,7 +12,13 @@ function App() {
   useEffect(() => {
     async function getuser(params) {
       await axios.get('/api/me')
-      .then((res) => { setuser(res.data) })
+      .then((res) => { if(Object.keys(res.data).length==0&&res.data.constructor==Object){
+        setuser(null);
+      }
+      else{
+        setuser(res.data);
+      }
+     })
       .catch(err => { console.log(err) })
     }
     getuser();
